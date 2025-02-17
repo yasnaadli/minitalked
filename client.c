@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,12 +7,11 @@
 /*   By: yamohamm <yasnaadli21@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:36:11 by yamohamm          #+#    #+#             */
-/*   Updated: 2025/02/16 19:45:18 by yamohamm         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:41:40 by yamohamm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
+#include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -33,62 +33,48 @@ void signal_handler(int sig)
         }
 }
 
-void send_char(pid_t server_pid, char c)
+static void send_char(pid_t server_pid, char c)
 {
-	int bit;
-	int kill_result;
+    int bit;
 
-	bit =7;
-	while (bit >=0)
-	{
-		if((c >> bit) & 1 )
-			kill_result = kill( server_pid, SIGUSR2);
-		else
-			kill_result = kill (server_pid, SIGUSR1);
-		if( kill_result == -1)
-		{ 
-		error_message("ohno. Error:failed to send signal.\n");
-		exit(EXIT_FAILURE);
-		}
-		usleep(500);
-		bit--; 
-	}
+    bit = 0;
+    while (bit < 8)
+    {
+        if (c & (1 << bit))
+            kill(server_pid, SIGUSR2);
+        else
+            kill(server_pid, SIGUSR1);
+        bit++;
+        usleep(100);
+    }
 }
 
-void send_message(pid_t server_pid, char *message)
+static void send_message(pid_t server_pid, char *message)
 {
     while (*message)
     {
-    send_char(server_pid, *message);
-    message++; 
+        send_char(server_pid, *message);
+        message++;
     }
     send_char(server_pid, '\0');
 }
 
-int main (int argc, char **argv)
+int main(int argc, char **argv)
 {
-    {
-        pid_t server_pid;
-        char *message;
-        if (argc != 3 || !argv[2][0])
-        {
-            error_message("Usage: ./client <server_pid> <message>\n");
-            return (1);
-        }
+    pid_t server_pid;
 
-        server_pid = ft_atoi(argv[1]);
-        if (server_pid <= 0)
-        {
-            error_message("ohno error, PID is invalid.\n");
-            return (1);
-        }
-        message = argv[2];
-        signal(SIGUSR1, signal_handler);
-        signal(SIGUSR2, signal_handler);
-        send_message(server_pid, message);
-        while (1)
-            pause();
-    
-        return (0);
+    if (argc != 3)
+    {
+        ft_putstr_fd("Usage: ", 1);
+        ft_putstr_fd(argv[0], 1);
+        ft_putstr_fd(" <server_pid> <message>\n", 1);
+        return (1);
     }
+    signal(SIGUSR1, SIG_IGN);
+    signal(SIGUSR2, SIG_IGN);
+
+    server_pid = ft_atoi(argv[1]);
+    send_message(server_pid, argv[2]);
+
+    return (0);
 }

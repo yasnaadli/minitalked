@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,16 +7,17 @@
 /*   By: yamohamm <yasnaadli21@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:37:03 by yamohamm          #+#    #+#             */
-/*   Updated: 2025/02/16 19:45:35 by yamohamm         ###   ########.fr       */
+/*   Updated: 2025/02/17 19:43:48 by yamohamm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include "minitalk.h"
 
-void sig_handler(int sig, siginfo_t *info, void *context)
+static void sig_action(int sig, siginfo_t *info, void *context)
 { 
     static int bit = 0;
     static char death = 0;
@@ -51,11 +53,11 @@ int main(void)
 {
     struct sigaction sa;
 
-    ft_putstr_fd("Your server's PID is: ", 1);
+    ft_putstr_fd("Server PID: ", 1);
     ft_putnbr_fd(getpid(), 1);
     ft_putchar_fd('\n', 1);
 
-    sa.sa_sigaction = sig_handler;
+    sa.sa_sigaction = sig_action;
     sa.sa_flags = SA_SIGINFO;
     sigemptyset(&sa.sa_mask);
     sigaction(SIGUSR1, &sa, NULL);

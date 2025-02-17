@@ -6,7 +6,7 @@
 /*   By: yamohamm <yasnaadli21@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:35:58 by yamohamm          #+#    #+#             */
-/*   Updated: 2025/02/14 15:09:09 by yamohamm         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:29:59 by yamohamm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 size_t	ft_strlen(const char *s);
-void sig_handler(int, siginfo_t *, void *);
 
 #endif
