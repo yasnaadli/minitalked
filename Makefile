@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: yamohamm <yasnaadli21@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/13 17:36:40 by yamohamm          #+#    #+#              #
-#    Updated: 2025/02/13 18:10:03 by yamohamm         ###   ########.fr        #
+#    Created: 2025/02/18 15:23:58 by yamohamm          #+#    #+#              #
+#    Updated: 2025/02/18 15:24:01 by yamohamm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ OBJ_SERVER = $(SRC_SERVER:.c=.o)
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
 all: $(SERVER) $(CLIENT)
-
+	@echo "server and client compiled, enjoy your chat."
+	
 $(SERVER): $(OBJ_SERVER)
 	$(CC) $(CFLAGS) $(OBJ_SERVER) -o $(SERVER)
 

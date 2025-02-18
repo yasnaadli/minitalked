@@ -15,9 +15,10 @@
 #include <signal.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <signal.h>
 #include "minitalk.h"
 
-static void sig_action(int sig, siginfo_t *info, void *context)
+static void	sig_action(int sig, siginfo_t *info, void *context)
 { 
     static int bit = 0;
     static char death = 0;
@@ -49,22 +50,20 @@ static void sig_action(int sig, siginfo_t *info, void *context)
     usleep(100);
 }   
 
-int main(void)
+int	main(void)
 {
-    struct sigaction sa;
+	struct sigaction sa;
 
-    ft_putstr_fd("Server PID: ", 1);
-    ft_putnbr_fd(getpid(), 1);
-    ft_putchar_fd('\n', 1);
+	ft_putstr_fd("Server PID: ", 1);
+	ft_putnbr_fd(getpid(), 1);
+	ft_putchar_fd('\n', 1);
 
-    sa.sa_sigaction = sig_action;
-    sa.sa_flags = SA_SIGINFO;
-    sigemptyset(&sa.sa_mask);
-    sigaction(SIGUSR1, &sa, NULL);
-    sigaction(SIGUSR2, &sa, NULL);
-    
-    while (1)
-        pause();
-    
-    return (0);
+	sa.sa_sigaction = sig_action;
+	sa.sa_flags = SA_SIGINFO;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
+	while (1)
+		pause();
+	return (0);
 }
